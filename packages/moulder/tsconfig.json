@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "module": "esnext",
+    "target": "ES2021",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["dist", "./*.d.ts"]
+}

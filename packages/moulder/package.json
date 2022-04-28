@@ -1,0 +1,63 @@
+{
+  "name": "moulder",
+  "version": "0.1.2",
+  "description": " A JavaScript framework for building visual artworks",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/contter/moulder",
+    "directory": "packages/moulder"
+  },
+  "author": {
+    "name": "Andrey Andronov",
+    "email": "support@contter.com",
+    "url": "https://contter.com"
+  },
+  "main": "./dist/index.esm.js",
+  "license": "MIT",
+  "bugs": "",
+  "homepage": "https://contter.com",
+  "types": "index.d.ts",
+  "files": [
+    "dist",
+    "index.d.ts",
+    "index.tmpl.html",
+    "postcss.config.js",
+    "rollup.config.js",
+    "tailwind.config.js",
+    "tsconfig.json",
+    "vite.config.js",
+    "bin"
+  ],
+  "bin": {
+    "moulder": "./bin/moulder.js"
+  },
+  "scripts": {
+    "dev": "rimraf dist && rollup -c -w",
+    "build": "rimraf dist && cross-env NODE_ENV=production rollup -c"
+  },
+  "dependencies": {
+    "hyperapp": "^2.0.22"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.3",
+    "@rollup/plugin-node-resolve": "^13.2.0",
+    "@rollup/plugin-typescript": "^8.3.1",
+    "adm-zip": "^0.5.9",
+    "autoprefixer": "^10.4.2",
+    "cross-env": "^7.0.3",
+    "daisyui": "^2.13.5",
+    "fs-extra": "^10.0.1",
+    "postcss": "^8.4.7",
+    "rollup": "^2.70.1",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "style-loader": "^3.3.1",
+    "tailwindcss": "^3.0.23",
+    "vite": "^2.9.1",
+    "vite-plugin-eslint": "^1.6.0"
+  },
+  "resolutions": {},
+  "engines": {
+    "node": ">=12.22.0"
+  }
+}
