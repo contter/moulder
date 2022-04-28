@@ -1,0 +1,32 @@
+{
+  "name": "example",
+  "version": "0.0.1",
+  "description": "Example",
+  "main": "./dist/",
+  "license": "MIT",
+  "repository": "",
+  "bugs": "",
+  "homepage": "",
+  "types": "index.d.ts",
+  "files": [],
+  "scripts": {
+    "pr": "./../moulder/bin/moulder.js dev",
+    "dev": "moulder dev",
+    "build": "rimraf dist && moulder build",
+    "build-pr": "rimraf dist && ./../moulder/bin/moulder.js build"
+  },
+  "dependencies": {
+    "moulder": "*",
+    "p5": "^1.4.1"
+  },
+  "peerDependencies": {
+  },
+  "devDependencies": {
+    "@types/p5": "^1.4.2"
+  },
+  "resolutions": {
+  },
+  "engines": {
+    "node": ">=12.22.0"
+  }
+}
