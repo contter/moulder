@@ -136,3 +136,8 @@ export function debounce<F extends Procedure>(
 
   return debouncedFunction;
 }
+
+export const isActive = (node: any, activeNode: any) => {
+  return node.slug === activeNode.slug && node.pk === activeNode.pk && node.root === activeNode.root;
+};
+

@@ -1,7 +1,5 @@
+import { isActive } from './utils';
 
-const isActive = (node: any, activeNode: any) => {
-  return node.slug === activeNode.slug && node.pk === activeNode.pk && node.root === activeNode.root;
-};
 
 export const renderNode = (node: any, activeNode: any) => {
   const doc = document.querySelector('.moulder') as HTMLElement;

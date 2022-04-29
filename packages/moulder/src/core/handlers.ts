@@ -1,14 +1,12 @@
 import { tools } from './tools';
-import { postSetStateParam } from './proxy';
 import { renderNode, renderParam } from './render';
-import { getMoulder } from './core';
+import { postSetStateParam } from './action';
+import { eventEmitter } from './event';
+import { USE_SET_NODE, USE_SET_PARAM, USE_SET_PARAM_STATE, USE_SWITCH_NODE } from './constants';
+import { getType, isActive } from './utils';
+import { EType } from './types';
 
-export const useProxyNode = (node: any): any => {
-  renderNode(node, getMoulder().activeNode);
-};
-
-const params: any = {};
-
+// state subs
 const getSubs = (type: string) => {
   const listenToEvent = (dispatch: any, props: any) => {
     const listener = (event: any) =>
@@ -25,66 +23,104 @@ const getSubs = (type: string) => {
   return [listen(type, Response)] as any;
 }
 
+// USE_SET_NODE
+eventEmitter.on(USE_SET_NODE, (data) => {
+  renderNode(data.data, data.activeNode);
+});
 
-export const useProxyParameter = (config: any = {}, render = false, fromNodes = false): any => {
+const stateParams: any = {};
+
+const updStateParams = (data: any) => {
+  const nodeKey = `${data.pk}_${data.nodeSlug}_${data.root}`;
+
+  if (!stateParams[nodeKey]) {
+    return
+  }
+
+  const current = stateParams[nodeKey].filter((a: any) => a.slug === data.paramSlug);
+  if (current.length) {
+    current[0]._config = { ...current[0]._config, ...data.state };
+  }
+}
+
+// USE_SET_PARAM
+eventEmitter.on(USE_SET_PARAM, (data) => {
+  const { data: config, activeNode } = data;
   const { node, slug } = config;
   const _config = node.state[slug].in;
   const nodeKey = `${node.pk}_${node.slug}_${node.root}`;
   const sub_type = `t_${nodeKey}_${slug}`;
-  // const sub_type = `t_${slug}`;
-
-  // get helper
-  const _helper = tools[_config.helper];
+  // get tool
+  const _tool = tools[_config.tool];
   // call
-  let out = config.node.state[slug].out;  // _helper.call(_config);
+  let out = config.node.state[slug].out;
 
-  if (!params[nodeKey]) {
-    params[nodeKey] = []
+  if (!stateParams[nodeKey]) {
+    stateParams[nodeKey] = []
   }
 
-  // render
-  const current = params[nodeKey].filter((a: any) => a.paramSlug === slug);
-
-  if (fromNodes && current.length) {
-    out = current[0].out;
-  }
-  if (!fromNodes && current.length){
-    current[0].out = out;
-  }
-
-  if (!render) {
-    if (!current.length || !params[nodeKey].length) {
-      params[nodeKey].push({
-        data: config,
-        paramSlug: slug,
-        out,
-      });
-    }
-    dispatchEvent(new CustomEvent(sub_type, { detail: { out } }));
+  const current = stateParams[nodeKey].filter((a: any) => a.slug === slug);
+  if (!current.length) {
+    stateParams[nodeKey].push({
+      config,
+      _config,
+      slug,
+      node,
+      out,
+    });
   } else {
-    const subs = getSubs(sub_type);
-    const element = _helper.render({ ..._config, out }, () => subs, (state: any, newState: any) => {
+    current[0]._config.out = out;
+  }
+
+  const subs = getSubs(sub_type);
+  if (!isActive(node, activeNode)) {
+    return;
+  }
+  const element = _tool.render({ ..._config, out }, () => subs, (state: any, newState: any) => {
+    // to send data to asset
+    const data = {
+      pk: node.pk,
+      nodeSlug: node.slug,
+      paramSlug: slug,
+      root: node.root,
+      state: newState
+    }
+    postSetStateParam(data);
+    updStateParams(data);
+
+    return { ...state, ...newState };
+  });
+  // render in html
+  renderParam(element, node, slug);
+});
+
+// USE_SWITCH_NODE
+eventEmitter.on(USE_SWITCH_NODE, (data) => {
+  if (getType() !== EType.PARAMS) {
+    return;
+  }
+  const { data: { node }} = data;
+  const nodeKey = `${node.pk}_${node.slug}_${node.root}`;
+  const items = stateParams[nodeKey];
+
+  items.forEach((item: any) => {
+
+    const _tool = tools[item.config.node.state[item.config.slug].in.tool];
+    const element = _tool.render({ ...item._config }, () => () => {}, (state: any, newState: any) => {
       // to send data to asset
-      postSetStateParam({
+      const data = {
         pk: node.pk,
         nodeSlug: node.slug,
-        paramSlug: slug,
+        paramSlug: item.slug,
         root: node.root,
         state: newState
-      });
+      }
+      postSetStateParam(data);
+      updStateParams(data);
 
       return { ...state, ...newState };
     });
-    renderParam(element, node, slug);
-  }
-
-  return out;
-};
-
-export const switchParameter = (node: any, fromNodes = false): any => {
-  const nodeKey = `${node.pk}_${node.slug}_${node.root}`;
-  const items = params[nodeKey];
-  items?.forEach((item: any) => {
-    useProxyParameter(item.data, true, fromNodes);
+    // render in html
+    renderParam(element, node, item.slug);
   });
-}
+});

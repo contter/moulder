@@ -1,4 +1,4 @@
-import { getType, slugify } from './utils';
+import { deepCopy, getType } from './utils';
 import { EType } from './types';
 
 let CACHE: any = {};
@@ -15,64 +15,48 @@ export const setCache = (newCache: any) => {
   CACHE = newCache;
 };
 
-const cache = () => {
-  // if (getType() === EType.ASSET) {
-  //   const fromCache = CACHE[slug];
-  //
-  //   if (fromCache && !getter.includes(slug)) {
-  //     getter.push(slug);
-  //   } else {
-  //     CACHE[slug] = this;
-  //   }
-  // }
-};
-
-export const useCacheNode = (config: any) => {
-  let exist = false;
-  let resultCache;
-  const slug = slugify(config?.name ?? 'Node');
+export const useCacheNode = (config: any, slug: string) => {
+  let resultCache = false;
+  // const slug = slugify(config?.name ?? 'Node');
   if (getType() === EType.ASSET) {
-    const fromCache = CACHE[slug];
-    exist = fromCache;
-
-    const empty = !ids().includes(slug);
-    if (fromCache && empty) {
-      resultCache = fromCache;
-      ids().push(slug);
-    } else if (empty && !fromCache) {
-      CACHE[slug] = {
-        in: config
-      };
-    }
+    resultCache = CACHE[slug];
+    // const fromCache = CACHE[slug];
+    // exist = fromCache;
+    //
+    // const empty = !ids().includes(slug);
+    // if (fromCache && empty) {
+    //   resultCache = fromCache;
+    //   ids().push(slug);
+    // } else if (empty && !fromCache) {
+    //   CACHE[slug] = {
+    //     in: config
+    //   };
+    // }
   }
   return {
-    exist,
+    exist: resultCache,
     cache: resultCache,
     set: (cacheSlug: string, state: any) => {
-      CACHE[cacheSlug] = JSON.parse(JSON.stringify(state));
+      CACHE[cacheSlug] = deepCopy(state);
     }
   };
 };
 
-export const useCacheParameter = (node: any, config: any) => {
-  const nodeSlug = slugify(node.name ?? 'Node');
-  const slug = `${nodeSlug}__${slugify(config?.title ?? 'Parameter')}`;
-
+export const useCacheParameter = (node: any, config: any, slug: string) => {
   const resultCache = CACHE[slug];
 
   return {
     exist: resultCache,
     cache: resultCache,
     set: (cacheSlug: string, state: any) => {
-      CACHE[cacheSlug] = JSON.parse(JSON.stringify(state));
+      CACHE[cacheSlug] = deepCopy(state);
     },
-    setIn: (cacheSlug: string, newState: any) => {
-      const st = CACHE[cacheSlug];
-      if (st) {
-        st.in = { ...st.in, ...newState };
+    setOut: (cacheSlug: string, out: any) => {
+      CACHE[cacheSlug].out = out;
+      if (CACHE[cacheSlug].in.out !== undefined) {
+        CACHE[cacheSlug].in.out = out;
       }
-      // new state, only config
-    }
+    },
   };
 };
 
@@ -80,5 +64,8 @@ export const setCacheParameter = (slug: string, newState: any) => {
   const st = CACHE[slug];
   if (st) {
     st.in = { ...st.in, ...newState };
+    if (newState.out !== undefined) {
+      st.out = newState.out;
+    }
   }
 };

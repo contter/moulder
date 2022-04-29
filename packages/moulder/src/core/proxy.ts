@@ -3,11 +3,11 @@ import {
   RESPONSE_PREPARE,
   RESPONSE_VIEWPORT,
   USE_PREPARE,
-  USE_PROXY_TARGET,
   USE_REGENERATE,
   USE_REQUEST_CAPTURE,
   USE_RESPONSE_CAPTURE,
-  USE_RUN_ASSET, USE_SET_CONF,
+  USE_RUN_ASSET,
+  USE_SET_CONF,
   USE_SET_NODE,
   USE_SET_PARAM,
   USE_SET_PARAM_STATE,
@@ -18,84 +18,11 @@ import {
 } from './constants';
 import { EType } from './types';
 import { getType } from './utils';
-import { useProxyNode, useProxyParameter } from './handlers';
 import { setCache, setCacheParameter } from './cache';
 import { captureToken } from './capture';
-import { getMoulder } from './core';
 import { updateConfig } from './config';
-
-export const postDataToOnlyParent = (data: any, url: string | null = null) => {
-  try {
-    window.parent.postMessage(data, url ?? document.referrer);
-  } catch (e) {
-    //
-  }
-};
-
-export const postDataToParent = (data: any, url: string | null = null, target: EType[] = []) => {
-  try {
-    window.parent.postMessage(
-      {
-        type: USE_PROXY_TARGET,
-        data: {
-          ...data,
-          from: getType()
-        },
-        target,
-        url: window.location.origin + window.location.pathname
-      },
-      url ?? document.referrer
-    );
-  } catch (e) {
-    //
-  }
-};
-export const postSetNode = (node: any) => {
-  postDataToParent(
-    {
-      type: USE_SET_NODE,
-      data: node.toJSON()
-    },
-    null,
-    [EType.NODES, EType.PARAMS]
-  );
-};
-
-export const postSetParam = (node: any, slug: string) => {
-  postDataToParent(
-    {
-      type: USE_SET_PARAM,
-      data: {
-        node,
-        slug
-      }
-    },
-    null,
-    [EType.PARAMS]
-  );
-};
-
-export const postSetStateParam = (data: any) => {
-  postDataToParent(
-    {
-      type: USE_SET_PARAM_STATE,
-      data
-    },
-    null,
-    [EType.ASSET]
-  );
-};
-
-export const postActiveNode = (node: any) => {
-  postDataToParent(
-    {
-      type: USE_SWITCH_NODE,
-      data: { node }
-    },
-    null,
-    [EType.PARAMS, EType.NODES]
-  );
-};
+import { postDataToOnlyParent } from './action';
+import { eventEmitter } from './event';
 
 export const listenMessage = (moulder: any) => {
   window.addEventListener('message', async (event) => {
@@ -147,7 +74,10 @@ export const listenMessage = (moulder: any) => {
         if (getType() !== EType.NODES) {
           break;
         }
-        useProxyNode(event.data.data);
+        eventEmitter.emit(USE_SET_NODE, {
+          data: event.data.data,
+          activeNode: moulder.activeNode,
+        });
         break;
 
       case USE_SET_PARAM:
@@ -157,7 +87,10 @@ export const listenMessage = (moulder: any) => {
         if (getType() !== EType.PARAMS) {
           break;
         }
-        useProxyParameter(event.data.data);
+        eventEmitter.emit(USE_SET_PARAM, {
+          data: event.data.data,
+          activeNode: moulder.activeNode,
+        });
         break;
 
       case USE_SWITCH_NODE:
@@ -169,6 +102,10 @@ export const listenMessage = (moulder: any) => {
             sendViewport(event);
           }, 500);
         }
+        eventEmitter.emit(USE_SWITCH_NODE, {
+          data: event.data.data,
+          activeNode: moulder.activeNode,
+        });
         break;
 
       case USE_REGENERATE:
@@ -205,7 +142,7 @@ export const listenMessage = (moulder: any) => {
         if (IS_EDITOR) {
           break;
         }
-        captureToken(getMoulder().options)
+        captureToken(moulder.options)
           .then((response) => {
             postDataToOnlyParent(
               {

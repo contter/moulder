@@ -537,9 +537,9 @@ export const runEditor = () => {
                   const st = { ...s };
                   assets.forEach((as: any) => {
                     const id = as.asset?.id;
-                    st.paramElement = { ...st.paramElement, [id]: { ...paramElement[id], status: 'loading', rnd: random().random().toString() }};
-                    st.nodeElement = { ...st.nodeElement, [id]: { ...nodeElement[id], status: 'loading', rnd: random().random().toString() }};
-                    st.assetElement = { ...st.assetElement, [id]: { ...assetElement[id], status: 'loading', rnd: random().random().toString() }};
+                    st.paramElement = { ...st.paramElement, [id]: { ...paramElement[id], status: 'loading', rnd: Math.random().toString() }};
+                    st.nodeElement = { ...st.nodeElement, [id]: { ...nodeElement[id], status: 'loading', rnd: Math.random().toString() }};
+                    st.assetElement = { ...st.assetElement, [id]: { ...assetElement[id], status: 'loading', rnd: Math.random().toString() }};
                   });
                   return st;
                 }

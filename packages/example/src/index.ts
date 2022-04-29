@@ -6,7 +6,7 @@ const asset = (node: any) => {
   const width = window.innerWidth;
   const height = window.innerHeight;
 
-  const bg = node.useParameter({ title: 'Background', helper: 'color', mode: 'rnd' });
+  const bg = node.useParameter({ title: 'Background', tool: 'color', mode: 'rnd' });
 
   const palette = [
     { value: ["#ffbc42","#d81159","#8f2d56","#218380","#73d2de"] },
@@ -14,20 +14,20 @@ const asset = (node: any) => {
     { value: ["#00fddc","#2e5339","#495f41","#ff5666","#ffccc9"] },
     { value: ["#820263","#d90368","#eadeda","#2e294e","#ffd400"] }
   ]
-  const resPalette = node.useParameter({ helper: 'palette', title: 'Palette', array: palette })[0].sort((a: any, b: any) => a - b);
-  const isNoise = node.useParameter({ title: 'Noise', helper: 'boolean', mode: 'rnd' });
-  const noiseInt = node.useParameter({ helper: 'between', title: 'Noise volume', min: 0, max: 22, minMin: 0, maxMax: 50  });
+  const resPalette = node.useParameter({ tool: 'palette', title: 'Palette', array: palette })[0].sort((a: any, b: any) => a - b);
+  const isNoise = node.useParameter({ title: 'Noise', tool: 'boolean', mode: 'rnd' });
+  const noiseInt = node.useParameter({ tool: 'between', title: 'Noise volume', min: 0, max: 22, minMin: 0, maxMax: 50  });
 
   const items: any = [];
-  const r_nodes = node.useNodes({ name: 'Rectangle', title: 'Rectangle', helper: 'between', min: 0, max: 4, maxMax: 10 });
+  const [r_nodes, r_node] = node.useNodes({ name: 'Rectangle', title: 'Rectangle', tool: 'between', min: 0, max: 4, maxMax: 10 });
   r_nodes.forEach((nodeRectangle: any) => {
-    const rotation = nodeRectangle.useParameter({ helper: 'between', title: 'Rotation', min: 0, max: 360 });
-    const spreadX = nodeRectangle.useParameter({ helper: 'between', title: 'Spread X', min: -150, max: 150, minMin: -500, maxMax: 500  });
-    const spreadY = nodeRectangle.useParameter({ helper: 'between', title: 'Spread Y', min: -150, max: 150, minMin: -500, maxMax: 500  });
+    const rotation = nodeRectangle.useParameter({ tool: 'between', title: 'Rotation', min: 0, max: 360 });
+    const spreadX = nodeRectangle.useParameter({ tool: 'between', title: 'Spread X', min: -150, max: 150, minMin: -500, maxMax: 500  });
+    const spreadY = nodeRectangle.useParameter({ tool: 'between', title: 'Spread Y', min: -150, max: 150, minMin: -500, maxMax: 500  });
     const x = (width / 2) + spreadX;
     const y = (height / 2) + spreadY;
-    const w = nodeRectangle.useParameter({ helper: 'between', title: 'Width', min: 0, max: 150, minMin: 0, maxMax: 300 });
-    const h = nodeRectangle.useParameter({ helper: 'between', title: 'Height', min: 0, max: 150, minMin: 0, maxMax: 300 });
+    const w = nodeRectangle.useParameter({ tool: 'between', title: 'Width', min: 0, max: 150, minMin: 0, maxMax: 300 });
+    const h = nodeRectangle.useParameter({ tool: 'between', title: 'Height', min: 0, max: 150, minMin: 0, maxMax: 300 });
     const fill = [...resPalette].sort(() => 0.5 - random().random())[0];
     items.push({
       type: 'rectangle',
@@ -40,14 +40,14 @@ const asset = (node: any) => {
     });
   })
 
-  const t_nodes = node.useNodes({ name: 'Triangle', title: 'Count triangles', helper: 'between', min: 2, max: 4 });
+  const [t_nodes, t_node] = node.useNodes({ name: 'Triangle', title: 'Count triangles', tool: 'between', min: 2, max: 4 });
   t_nodes.forEach((nodeTriangle: any) => {
-    const rotation = nodeTriangle.useParameter({ helper: 'between', title: 'Rotation', min: 0, max: 360 });
-    const spreadX = nodeTriangle.useParameter({ helper: 'between', title: 'Spread X', min: -150, max: 150, minMin: -500, maxMax: 500  });
-    const spreadY = nodeTriangle.useParameter({ helper: 'between', title: 'Spread Y', min: -150, max: 150, minMin: -500, maxMax: 500  });
+    const rotation = nodeTriangle.useParameter({ tool: 'between', title: 'Rotation', min: 0, max: 360 });
+    const spreadX = nodeTriangle.useParameter({ tool: 'between', title: 'Spread X', min: -150, max: 150, minMin: -500, maxMax: 500  });
+    const spreadY = nodeTriangle.useParameter({ tool: 'between', title: 'Spread Y', min: -150, max: 150, minMin: -500, maxMax: 500  });
     const x = (width / 2) + spreadX;
     const y = (height / 2) + spreadY;
-    const radius = nodeTriangle.useParameter({ helper: 'between', title: 'Radius', min: 0, max: 150 });
+    const radius = nodeTriangle.useParameter({ tool: 'between', title: 'Radius', min: 0, max: 150 });
     const fill = [...resPalette].sort(() => 0.5 - random().random())[0];
     items.push({
       type: 'triangle',
@@ -59,14 +59,14 @@ const asset = (node: any) => {
     });
   })
 
-  const c_nodes = node.useNodes({ name: 'Circle',  title: 'Count circles', helper: 'between', min: 2, max: 4 });
+  const [c_nodes, c_node] = node.useNodes({ name: 'Circle',  title: 'Count circles', tool: 'between', min: 2, max: 4 });
   c_nodes.forEach((nodeCircle: any) => {
-    const rotation = nodeCircle.useParameter({ helper: 'between', title: 'Rotation', min: 0, max: 360 });
-    const spreadX = nodeCircle.useParameter({ helper: 'between', title: 'Spread X', min: -150, max: 150, minMin: -500, maxMax: 500  });
-    const spreadY = nodeCircle.useParameter({ helper: 'between', title: 'Spread Y', min: -150, max: 150, minMin: -500, maxMax: 500  });
+    const rotation = nodeCircle.useParameter({ tool: 'between', title: 'Rotation', min: 0, max: 360 });
+    const spreadX = nodeCircle.useParameter({ tool: 'between', title: 'Spread X', min: -150, max: 150, minMin: -500, maxMax: 500  });
+    const spreadY = nodeCircle.useParameter({ tool: 'between', title: 'Spread Y', min: -150, max: 150, minMin: -500, maxMax: 500  });
     const x = (width / 2) + spreadX;
     const y = (height / 2) + spreadY;
-    const radius = nodeCircle.useParameter({ helper: 'between', title: 'Radius', min: 0, max: 150 });
+    const radius = nodeCircle.useParameter({ tool: 'between', title: 'Radius', min: 0, max: 150 });
     const fill = [...resPalette].sort(() => 0.5 - random().random())[0];
     items.push({
       type: 'circle',
@@ -78,15 +78,15 @@ const asset = (node: any) => {
     });
   })
 
-  const l_nodes = node.useNodes({ name: 'Line', title: 'Count lines', helper: 'between', min: 2, max: 4, maxMax: 100 });
+  const [l_nodes, l_node] = node.useNodes({ name: 'Line', title: 'Count lines', tool: 'between', min: 2, max: 4, maxMax: 100 });
   l_nodes.forEach((nodeLine: any) => {
-    const rotation = nodeLine.useParameter({ helper: 'between', title: 'Rotation', min: 0, max: 360 });
-    const spreadX = nodeLine.useParameter({ helper: 'between', title: 'Spread X', min: -150, max: 150, minMin: -500, maxMax: 500  });
-    const spreadY = nodeLine.useParameter({ helper: 'between', title: 'Spread Y', min: -150, max: 150, minMin: -500, maxMax: 500  });
+    const rotation = nodeLine.useParameter({ tool: 'between', title: 'Rotation', min: 0, max: 360 });
+    const spreadX = nodeLine.useParameter({ tool: 'between', title: 'Spread X', min: -150, max: 150, minMin: -500, maxMax: 500  });
+    const spreadY = nodeLine.useParameter({ tool: 'between', title: 'Spread Y', min: -150, max: 150, minMin: -500, maxMax: 500  });
     const x = (width / 2) + spreadX;
     const y = (height / 2) + spreadY;
-    const length = nodeLine.useParameter({ helper: 'between', title: 'Length', min: 0, max: 200 });
-    const weight = nodeLine.useParameter({ helper: 'between', title: 'Weight', min: 0, max: 20 });
+    const length = nodeLine.useParameter({ tool: 'between', title: 'Length', min: 0, max: 200 });
+    const weight = nodeLine.useParameter({ tool: 'between', title: 'Weight', min: 0, max: 20 });
     const fill = [...resPalette].filter(a => a !== bg).sort(() => 0.5 - random().random())[0];
     items.push({
       type: 'line',

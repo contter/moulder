@@ -50,7 +50,8 @@ export default [
         targets: [
           { src: 'index.tmpl.html', dest: 'dist/' },
           { src: 'vite.config.js', dest: 'dist/' },
-          { src: 'tailwind.config.js', dest: 'dist/' }
+          { src: 'tailwind.config.js', dest: 'dist/' },
+          { src: 'index.css', dest: 'dist/' }
         ]
       }),
       PRODUCTION && terser({
@@ -94,7 +95,8 @@ export default [
         targets: [
           { src: 'index.tmpl.html', dest: 'dist/' },
           { src: 'vite.config.js', dest: 'dist/' },
-          { src: 'tailwind.config.js', dest: 'dist/' }
+          { src: 'tailwind.config.js', dest: 'dist/' },
+          { src: 'index.css', dest: 'dist/' }
         ]
       }),
       PRODUCTION && terser({

@@ -1,15 +1,19 @@
 import { EType, IConfig } from './types';
 import { digest, getType } from './utils';
 import { switchActive } from './render';
-import { listenMessage, postActiveNode } from './proxy';
+// import { listenMessage, postActiveNode } from './proxy';
 import { hash, regenerateRandom } from './hash';
 import { cleanCacheIds, getCache } from './cache';
 import { IS_DEV, IS_EDITOR, IS_HASH, IS_ON_FRAME, IS_STATE, IS_TYPE } from './constants';
 import { runToken } from './token';
 import Node from './Node';
 import { runEditor } from './editor';
-import { switchParameter } from "./handlers";
+// import { switchParameter } from "./handlers";
 import { config } from './config';
+import { listenMessage } from './proxy';
+import { postActiveNode } from './action';
+
+import './setup';
 
 // Init theme
 const theme = localStorage.getItem('theme') ?? 'dark';
@@ -75,7 +79,7 @@ class Moulder {
   switchActiveNode = (node: any, send = true, fromNodes = false) => {
     this.activeNode = node;
     switchActive(node);
-    switchParameter(node, fromNodes);
+    // switchParameter(node, fromNodes);
     send && postActiveNode(this.activeNode);
   };
 
@@ -120,11 +124,11 @@ class Moulder {
   };
 
   reload = () => {
-    if (getType() === EType.NODES) {
-      // const doc = document.querySelector('.moulder');
-      // if (doc) {
-      //   doc.innerHTML = '';
-      // }
+    if (getType() === EType.PARAMS) {
+      const doc = document.querySelector('.moulder');
+      if (doc) {
+        doc.innerHTML = '';
+      }
     }
     if (getType() === EType.PARAMS || getType() === EType.NODES) {
       cleanCacheIds();
