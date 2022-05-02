@@ -97,6 +97,9 @@ export const listenMessage = (moulder: any) => {
         if (getType() === EType.PARAMS || event.data.from === EType.NONE) {
           moulder.switchActiveNode(event.data.data.node, false, true);
         }
+        if (getType() === EType.NODES || event.data.from === EType.NONE) {
+          moulder.switchActiveNode(event.data.data.node, false, true);
+        }
         if (getType() === EType.PARAMS || getType() === EType.NODES) {
           setTimeout(() => {
             sendViewport(event);

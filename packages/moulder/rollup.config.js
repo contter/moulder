@@ -62,16 +62,8 @@ export default [
     ]
   },
   {
-    // input: 'src/index.ts',
     input: path.resolve(__dirname, 'src/index.ts'),
     output: [
-      // {
-      //   format: 'umd',
-      //   name: `${LIBRARY_NAME}.umd.js`,
-      //   sourcemap: true,
-      //   dir: path.resolve(__dirname, 'dist'),
-      //   inlineDynamicImports: true,
-      // }
       {
         name: LIBRARY_NAME,
         file: `dist/${LIBRARY_NAME}.umd.js`, // UMD
@@ -82,7 +74,9 @@ export default [
       }
     ],
     plugins: [
-      nodeResolve(),
+      nodeResolve({
+        preferBuiltins: false
+      }),
       // external(),
       commonjs({
         extensions: ['.js'],
