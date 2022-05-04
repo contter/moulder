@@ -14,6 +14,7 @@ import { hash } from './hash';
 export const captureAsset = async (options: any) => {
   // chunks in future
   // svg and other
+  options?.preCapture?.();
   return new Promise((resolve, reject) => {
     options.media?.forEach((m: any) => {
       const elem = document.querySelector(`#${m.containerId}`) as HTMLCanvasElement;
@@ -52,6 +53,7 @@ export const captureAsset = async (options: any) => {
 export const captureToken = async (options: any) => {
   // chunks in future
   // svg and other
+  options?.preCapture?.();
   return new Promise((resolve, reject) => {
     options.media?.forEach((m: any) => {
       const elem = document.querySelector(`#${m.containerId}`) as HTMLCanvasElement;

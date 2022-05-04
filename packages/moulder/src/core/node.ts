@@ -39,6 +39,10 @@ export default class Node {
       _config.value = config.value;
       cache.in.value = config.value;
     }
+    if (cache && config.value === undefined) {
+      _config.value = undefined;
+      cache.in.value = undefined;
+    }
 
     if (cache) {
       _config = { ...cache.in };

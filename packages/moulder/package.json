@@ -1,6 +1,6 @@
 {
   "name": "moulder",
-  "version": "0.1.4",
+  "version": "0.1.4-dev1",
   "description": " A JavaScript framework for building visual artworks",
   "repository": {
     "type": "git",
