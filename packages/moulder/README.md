@@ -1,6 +1,6 @@
 # Moulder
 
-### 🚧  Beta version 🚧
+### 🚧 Beta version 🚧
 
 ### Moulder - A JavaScript framework for building visual artworks.
 
@@ -19,49 +19,57 @@ npm i moulder
 ```
 
 ## Usage
+
 ```js
 // Example with p5js
 import p5 from 'p5';
 import { random, registerAsset } from 'moulder';
 
 const asset = (node) => {
-  const bg = node.useParameter({ title: 'Background', helper: 'color', mode: 'rnd' });
+  const bg = node.useParameter({
+    title: 'Background',
+    helper: 'color',
+    mode: 'rnd',
+  });
 
   let sketch = (p5) => {
-
     p5.setup = () => {
       p5.createCanvas(window.innerWidth, window.innerHeight);
-    }
+    };
 
     p5.draw = () => {
       p5.background(bg);
-      
+
       p5.noLoop();
-    }
-  }
-  
+    };
+  };
+
   new p5(sketch, document.body);
 };
 
-registerAsset((node) => {
-  asset(node);
-}, {
-  media: [
-    {
-      containerId: 'defaultCanvas0',
-      format: 'png',
-      mime: 'image/png'
-    }
-  ]
-});
+registerAsset(
+  (node) => {
+    asset(node);
+  },
+  {
+    media: [
+      {
+        containerId: 'defaultCanvas0',
+        format: 'png',
+        mime: 'image/png',
+      },
+    ],
+  }
+);
 ```
+
 # Run
+
 ```
 npm run dev
 # Go to localhost:3000?editor=1&dev=1
 # It's open an editor
 ```
-
 
 ## TODO
 
@@ -77,4 +85,3 @@ Open for cooperation
 ## License
 
 MIT License
-

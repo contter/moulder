@@ -1,10 +1,10 @@
-import typescript from '@rollup/plugin-typescript';
+import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
 import nodeResolve from '@rollup/plugin-node-resolve';
 // import external from 'rollup-plugin-peer-deps-external'
-import commonjs from '@rollup/plugin-commonjs'
-import path from "path";
-import copy from "rollup-plugin-copy";
+import commonjs from '@rollup/plugin-commonjs';
+import path from 'path';
+import copy from 'rollup-plugin-copy';
 
 const PRODUCTION = process.env.NODE_ENV === 'production';
 const LIBRARY_NAME = 'moulder';
@@ -14,7 +14,7 @@ export default [
     // input: 'src/index.ts',
     input: {
       index: path.resolve(__dirname, 'src/index.ts'),
-      cli: path.resolve(__dirname, 'src/cli/index.ts')
+      cli: path.resolve(__dirname, 'src/cli/index.ts'),
     },
     output: [
       {
@@ -24,7 +24,7 @@ export default [
         exports: 'named',
         format: 'cjs',
         externalLiveBindings: false,
-        freeze: false
+        freeze: false,
       },
       {
         dir: path.resolve(__dirname, 'dist'),
@@ -33,7 +33,7 @@ export default [
         exports: 'named',
         format: 'es',
         externalLiveBindings: false,
-        freeze: false
+        freeze: false,
       },
     ],
     plugins: [
@@ -43,7 +43,7 @@ export default [
         extensions: ['.js'],
         // Optional peer deps of ws. Native deps that are mostly for performance.
         // Since ws is not that perf critical for us, just ignore these deps.
-        ignore: ['bufferutil', 'utf-8-validate']
+        ignore: ['bufferutil', 'utf-8-validate'],
       }),
       typescript(),
       copy({
@@ -51,15 +51,16 @@ export default [
           { src: 'index.tmpl.html', dest: 'dist/' },
           { src: 'vite.config.js', dest: 'dist/' },
           { src: 'tailwind.config.js', dest: 'dist/' },
-          { src: 'index.css', dest: 'dist/' }
-        ]
+          { src: 'index.css', dest: 'dist/' },
+        ],
       }),
-      PRODUCTION && terser({
-        mangle: {
-          reserved: ['{{{MOULDER_IS_EDITOR}}}']
-        }
-      }),
-    ]
+      PRODUCTION &&
+        terser({
+          mangle: {
+            reserved: ['{{{MOULDER_IS_EDITOR}}}'],
+          },
+        }),
+    ],
   },
   {
     input: path.resolve(__dirname, 'src/index.ts'),
@@ -70,19 +71,19 @@ export default [
         format: 'umd',
         // exports: 'auto',
         inlineDynamicImports: true,
-        globals: {}
-      }
+        globals: {},
+      },
     ],
     plugins: [
       nodeResolve({
-        preferBuiltins: false
+        preferBuiltins: false,
       }),
       // external(),
       commonjs({
         extensions: ['.js'],
         // Optional peer deps of ws. Native deps that are mostly for performance.
         // Since ws is not that perf critical for us, just ignore these deps.
-        ignore: ['bufferutil', 'utf-8-validate']
+        ignore: ['bufferutil', 'utf-8-validate'],
       }),
       typescript(),
       copy({
@@ -90,14 +91,15 @@ export default [
           { src: 'index.tmpl.html', dest: 'dist/' },
           { src: 'vite.config.js', dest: 'dist/' },
           { src: 'tailwind.config.js', dest: 'dist/' },
-          { src: 'index.css', dest: 'dist/' }
-        ]
+          { src: 'index.css', dest: 'dist/' },
+        ],
       }),
-      PRODUCTION && terser({
-        mangle: {
-          reserved: ['{{{MOULDER_IS_EDITOR}}}']
-        }
-      }),
-    ]
-  }
+      PRODUCTION &&
+        terser({
+          mangle: {
+            reserved: ['{{{MOULDER_IS_EDITOR}}}'],
+          },
+        }),
+    ],
+  },
 ];

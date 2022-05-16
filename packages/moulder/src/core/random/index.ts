@@ -1,11 +1,4 @@
-export const generateHash = () => {
-  const chars = 'abcdefABCDEF0123456789';
-  let result = 'x01'; // version
-  for (let i = 52; i > 0; --i) {
-    result += chars[Math.floor(Math.random() * chars.length)];
-  }
-  return result;
-};
+import { hash, regenerateHash } from '../hash';
 
 class Random {
   crypt: any;
@@ -22,7 +15,9 @@ class Random {
     this.crypt ^= this.crypt << 13;
     this.crypt ^= this.crypt >> 17;
     this.crypt ^= this.crypt << 5;
-    return ((this.crypt < 0 ? ~this.crypt + 1 : this.crypt) % 10000000) / 10000000;
+    return (
+      ((this.crypt < 0 ? ~this.crypt + 1 : this.crypt) % 10000000) / 10000000
+    );
     /* tslint:enable:no-bitwise */
   }
 
@@ -68,36 +63,11 @@ class Random {
   };
 }
 
-// use query or exists data;
-let initialHash = new URLSearchParams(window.location.search).get('hash');
-if (!initialHash) {
-  initialHash = generateHash();
-}
-export const hash = (): string => {
-  return initialHash as string;
-};
-
 let initialRandom = new Random(hash());
 export let regenerateRandom = (newHash: string) => {
-  initialHash = newHash;
-  initialRandom = new Random(initialHash);
+  regenerateHash(newHash);
+  initialRandom = new Random(newHash);
 };
 export const random = () => {
   return initialRandom;
-};
-//
-// const uid = () => {
-//   return String.fromCharCode(Math.floor(random.random() * 26) + 97)
-//     + random.random().toString(16).slice(2)
-//     + performance.now().toString(16).slice(4);
-// };
-export const uid = (): string => {
-  const a = new Uint32Array(3);
-  window.crypto.getRandomValues(a);
-  return (
-    performance.now().toString(36) +
-    Array.from(a)
-      .map((A) => A.toString(36))
-      .join('')
-  ).replace(/\./g, '');
 };

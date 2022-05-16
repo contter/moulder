@@ -1,12 +1,14 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "strict": true,
     "module": "esnext",
     "target": "ES2021",
     "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noImplicitAny": false,
     "moduleResolution": "node",
+    "jsx": "react-jsx"
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["dist", "./*.d.ts"]
+  "exclude": ["dist", "./*.d.ts", "node_modules"]
 }

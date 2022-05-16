@@ -5,5 +5,3 @@ function start() {
 }
 
 start();
-
-

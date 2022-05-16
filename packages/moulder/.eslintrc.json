@@ -2,6 +2,7 @@
   "root": true,
   "parser": "@babel/eslint-parser",
   "plugins": ["jest"],
+  "ignorePatterns": ["node_modules*", "dist*"],
   "env": {
     "browser": true,
     "commonjs": true,
