@@ -1,11 +1,11 @@
 const path = require('path');
 module.exports = {
   content: [
-    `${path.join(__dirname, '..')}/src/**/*.{js,ts}`,
-    '../src/**/*.{js,ts}',
+    `${path.join(__dirname, '..')}/src/**/*.{js,jxs,ts,tsx}`,
+    '../src/**/*.{js,jxs,ts,tsx}',
     './index.tmpl.html',
     './index.html',
-    './src/**/*.{js,ts}',
+    './src/**/*.{js,jxs,ts,tsx}',
   ],
   plugins: [require('daisyui')],
   theme: {

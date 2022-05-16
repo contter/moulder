@@ -45,13 +45,10 @@ export const slugify = (...args: (string | number)[]): string => {
 // @ts-ignore
 export const hexToRgb = (c: string) =>
   `rgb(${c.match(/\w\w/g)?.map((x) => +`0x${x}`)})`;
-// @ts-ignore
+
 export const rgbToHex = (c: string) =>
-  '#' +
-  c
-    .match(/\d+/g)
-    ?.map((x) => (+x)?.toString(16)?.padStart(2, '0'))
-    .join();
+  // @ts-ignore
+  '#' + c.match(/\d+/g).map((x) => (+x).toString(16).padStart(2, '0')).join``;
 
 export const groupBy = <T, K extends keyof any>(
   list: T[],
@@ -146,6 +143,7 @@ export const searchBy = (
     return null;
   }, null);
 };
-
-export const range = (start: number, end: number) =>
-  [...Array(end - start + 1)].map((_, i) => start + i);
+// @ts-ignore
+export const range = (start: number, end: number) => {
+  return [...Array(end - start + 1)].map((_, i) => start + i);
+};

@@ -1,8 +1,9 @@
 import path from 'path';
 import { promises as fss } from 'fs';
 import * as process from 'process';
-import { spawn } from 'child_process';
+import { spawn, exec } from 'child_process';
 import * as fs from 'fs';
+import * as os from 'os';
 const AdmZip = require('adm-zip');
 const fse = require('fs-extra');
 const { version } = require('../package.json');
@@ -24,6 +25,7 @@ const fileExists = (path: string) =>
 let sp: any;
 
 export const moulderRun = async () => {
+  const isWindows = os.platform() === 'win32';
   const command = process.argv.slice(-1)[0] ?? 'dev';
   // TODO parse arg, run vite
   // Check if exist in index.html
@@ -31,12 +33,12 @@ export const moulderRun = async () => {
   const modulePath = await fileExists(MODULE_PATH_TS);
   html = html.replace(
     '#MODULE_PATH',
-    modulePath ? MODULE_PATH_TS : MODULE_PATH_JS
+    (isWindows ? '/' : '') + (modulePath ? MODULE_PATH_TS : MODULE_PATH_JS),
   );
 
   await fss.writeFile(INDEX_HTML, html);
 
-  sp = spawn('vite', [command, '-c', VITE_CONFIG_PATH], { detached: true });
+  sp = spawn('vite', [command, '-c', VITE_CONFIG_PATH], { detached: true, shell: true });
 
   sp.stdout.on('data', (data: any) => {
     console.log(`${data}`);

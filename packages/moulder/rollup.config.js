@@ -88,6 +88,7 @@ export default [
       typescript(),
       copy({
         targets: [
+          { src: 'postcss.config.js', dest: 'dist/' },
           { src: 'index.tmpl.html', dest: 'dist/' },
           { src: 'vite.config.js', dest: 'dist/' },
           { src: 'tailwind.config.js', dest: 'dist/' },

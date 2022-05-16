@@ -7,15 +7,17 @@
 ## Features
 
 - Using any js library (p5js, threejs, etc).
-- Editor based on nodes and parameters.
-- Customizable tools.
-- Flexible parameters.
+- Editor based on nodes and properties.
+- Customizable components.
+- Flexible properties.
 - Easy to use. 
 
 ## Install
 
 ```
 npm i moulder
+// or
+yarn add moulder
 ```
 
 ## Usage
@@ -24,10 +26,13 @@ npm i moulder
 import p5 from 'p5';
 import { random, registerAsset } from 'moulder';
 
-const asset = (node) => {
-  const bg = node.useParameter({ title: 'Background', helper: 'color', mode: 'rnd' });
+let p5Global;
+const asset = (moulder) => {
+  const bg = moulder.node.useProperty('color', 'Background', { mode: 'rnd' });
 
+  p5Global?.remove?.();
   let sketch = (p5) => {
+    p5Global = p5;
 
     p5.setup = () => {
       p5.createCanvas(window.innerWidth, window.innerHeight);
@@ -46,6 +51,13 @@ const asset = (node) => {
 registerAsset((node) => {
   asset(node);
 }, {
+  prepareState: (node) => {
+    // TODO Setup unique state
+    return {};
+  },
+  beforeCapture: () => {
+    // Optional
+  },
   media: [
     {
       containerId: 'defaultCanvas0',
@@ -65,10 +77,9 @@ npm run dev
 
 ## TODO
 
-- Ability to use custom hash.
 - 100% typescript coverage.
 - Add test runs.
-- Documentation on tool creation.
+- Documentation on component's creation.
 
 ### Contributors ✨
 

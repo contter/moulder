@@ -1,6 +1,6 @@
 {
   "name": "moulder-editor",
-  "version": "0.0.1",
+  "version": "0.1.6",
   "description": "Editor",
   "main": "./dist/",
   "license": "MIT",
@@ -16,8 +16,7 @@
     "build-pr": "rimraf dist && ./../moulder/bin/moulder.js build"
   },
   "dependencies": {
-    "moulder": "*",
-    "p5": "^1.4.1"
+    "moulder": "*"
   },
   "peerDependencies": {
   },

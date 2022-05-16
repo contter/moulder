@@ -173,7 +173,7 @@ const DEFAULT_PADDING = 100;
 
 const Main = observer(() => {
   const store = useRootStore();
-  const [size, setSize] = useState<{ width: number, height: number }>({
+  const [size, setSize] = useState<{ width: number; height: number }>({
     width: MOULDER_CONFIG_DEFAULT_SIZE,
     height: MOULDER_CONFIG_DEFAULT_SIZE,
   });
