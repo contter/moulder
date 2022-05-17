@@ -7,11 +7,11 @@ import {
   MOULDER_CONFIG_MAX_SIZE,
   MOULDER_CONFIG_MIN_SIZE,
   MOULDER_IFRAME_ALLOW,
-  MOULDER_IFRAME_SANDBOX,
-  MOULDER_IS_DEV,
+  MOULDER_IFRAME_SANDBOX, MOULDER_IS_CHECK,
+  MOULDER_IS_DEV, MOULDER_IS_ON_FRAME,
   TEMPLATES,
-  THEMES,
-} from '../constants';
+  THEMES
+} from "../constants";
 import { EStatusWindow, EType } from '../types';
 import { deepCopy, getUrl } from '../utils';
 import { Provider, rootStore, useRootStore } from '../store';
@@ -112,9 +112,6 @@ const Iframe = ({ url, onLoad }: IIframeComp) => {
     }
   }, [rnd, setStatus]);
 
-  // const isParams = Object.keys(new URLSearchParams(url)).length > 0;
-
-  //${isParams ? '&' : '?'}rnd=${rnd}
   return (
     <div className={'relative w-full h-full'}>
       {status === 'loading' ? (
@@ -172,6 +169,7 @@ const Iframe = ({ url, onLoad }: IIframeComp) => {
 const DEFAULT_PADDING = 100;
 
 const Main = observer(() => {
+  const [setup, setSetup] = useState<boolean>(false);
   const store = useRootStore();
   const [size, setSize] = useState<{ width: number; height: number }>({
     width: MOULDER_CONFIG_DEFAULT_SIZE,
@@ -186,29 +184,31 @@ const Main = observer(() => {
   }, [store.theme]);
 
   useEffect(() => {
-    store.addAsset({
-      id: 1,
-      order: 0,
-      name: 'Asset',
-      url: window.location.origin + window.location.pathname,
-      windows: [
-        {
-          id: 1,
-          type: EType.ASSET,
-          status: EStatusWindow.LOADING,
-        },
-        {
-          id: 2,
-          type: EType.NODE,
-          status: EStatusWindow.LOADING,
-        },
-        {
-          id: 3,
-          type: EType.PROPERTY,
-          status: EStatusWindow.LOADING,
-        },
-      ],
-    });
+    if (MOULDER_IS_DEV) {
+      store.addAsset({
+        id: 1,
+        order: 0,
+        name: 'Asset',
+        url: window.location.origin + window.location.pathname,
+        windows: [
+          {
+            id: 1,
+            type: EType.ASSET,
+            status: EStatusWindow.LOADING,
+          },
+          {
+            id: 2,
+            type: EType.NODE,
+            status: EStatusWindow.LOADING,
+          },
+          {
+            id: 3,
+            type: EType.PROPERTY,
+            status: EStatusWindow.LOADING,
+          },
+        ],
+      });
+    }
   }, []);
 
   useEffect(() => {
@@ -306,7 +306,7 @@ const Main = observer(() => {
             </div>
           ) : null}
 
-          {MOULDER_IS_DEV && !store.applied ? (
+          {((MOULDER_IS_DEV && !store.applied) || (MOULDER_IS_CHECK && MOULDER_IS_ON_FRAME && !store.applied)) ? (
             <div className={'relative'}>
               <button
                 className={'btn btn-xs'}
@@ -332,7 +332,7 @@ const Main = observer(() => {
                           type: MOULDER_CMD_REQUEST_CAPTURE,
                           data: {},
                         },
-                        a.url
+                        getUrl(a.url)
                       );
                   });
                 }}
@@ -410,7 +410,7 @@ const Main = observer(() => {
             <div className={'h-full'}>
               {store.assets.map((a) => {
                 const _url = getUrl(a.url);
-                const url = `${_url}?node=0&id=${a.id}&type=${EType.NODE}&data=0&name=${a.name}`;
+                const url = `${_url}&id=${a.id}&type=${EType.NODE}`;
                 return (
                   <div
                     style={{
@@ -443,7 +443,7 @@ const Main = observer(() => {
         >
           {store.assets.map((a) => {
             const _url = getUrl(a.url);
-            const url = `${_url}?node=0&id=${a.id}&type=${EType.ASSET}&data=0&name=${a.name}`;
+            const url = `${_url}&id=${a.id}&type=${EType.ASSET}`;
             return (
               <div
                 style={{
@@ -455,18 +455,21 @@ const Main = observer(() => {
                 }}
                 key={a.id}
               >
-                <Iframe
-                  url={url}
-                  width={size.width}
-                  height={size.height}
-                  onLoad={(e) => {
-                    if (e.currentTarget.contentWindow) {
-                      a.windows
-                        .find((a) => a.type === EType.ASSET)
-                        ?.setProxy(e.currentTarget.contentWindow);
-                    }
-                  }}
-                />
+                {a.ready ?
+                  <Iframe
+                    url={url}
+                    width={size.width}
+                    height={size.height}
+                    onLoad={(e) => {
+                      if (e.currentTarget.contentWindow) {
+                        a.windows
+                          .find((a) => a.type === EType.ASSET)
+                          ?.setProxy(e.currentTarget.contentWindow);
+                      }
+                    }}
+                  />
+                  : null
+                }
               </div>
             );
           })}
@@ -488,7 +491,7 @@ const Main = observer(() => {
           <div className={'h-full overflow-scroll'}>
             {store.assets.map((a) => {
               const _url = getUrl(a.url);
-              const url = `${_url}?node=0&id=${a.id}&type=${EType.PROPERTY}&data=0&name=${a.name}`;
+              const url = `${_url}&id=${a.id}&type=${EType.PROPERTY}`;
               return (
                 <div
                   style={{

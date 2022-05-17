@@ -3,6 +3,7 @@ import { terser } from 'rollup-plugin-terser';
 import nodeResolve from '@rollup/plugin-node-resolve';
 // import external from 'rollup-plugin-peer-deps-external'
 import commonjs from '@rollup/plugin-commonjs';
+import replace from '@rollup/plugin-replace';
 import path from 'path';
 import copy from 'rollup-plugin-copy';
 
@@ -57,7 +58,7 @@ export default [
       PRODUCTION &&
         terser({
           mangle: {
-            reserved: ['{{{MOULDER_IS_EDITOR}}}'],
+            reserved: ['MOULDER_IS_EDITOR', 'MOULDER_IS_DEV', '{MOULDER_IS_FLAG_EDITOR}', '{MOULDER_IS_FLAG_DEV}'],
           },
         }),
     ],
@@ -75,6 +76,11 @@ export default [
       },
     ],
     plugins: [
+      replace({
+        'process.env.NODE_ENV': JSON.stringify('production'),
+        __buildDate__: () => JSON.stringify(new Date()),
+        __buildVersion: '0.2.0'
+      }),
       nodeResolve({
         preferBuiltins: false,
       }),
@@ -98,7 +104,7 @@ export default [
       PRODUCTION &&
         terser({
           mangle: {
-            reserved: ['{{{MOULDER_IS_EDITOR}}}'],
+            reserved: ['MOULDER_IS_EDITOR', 'MOULDER_IS_DEV', '{MOULDER_IS_FLAG_EDITOR}', '{MOULDER_IS_FLAG_DEV}'],
           },
         }),
     ],

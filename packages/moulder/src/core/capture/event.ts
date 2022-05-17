@@ -6,12 +6,12 @@ import {
   MOULDER_CMD_REQUEST_CAPTURE,
   MOULDER_CMD_RESPONSE_CAPTURE,
   MOULDER_IS_DEV,
-  MOULDER_IS_EDITOR,
-} from '../constants';
+  MOULDER_IS_EDITOR, MOULDER_IS_HASH, MOULDER_IS_ON_FRAME
+} from "../constants";
 import { capture } from './index';
 import { getAssetConfig } from '../register';
 
-if (getType() === EType.ASSET) {
+if (getType() === EType.ASSET || MOULDER_IS_HASH) {
   eventEmitter.on(MOULDER_CMD_REQUEST_CAPTURE, (_) => {
     capture(getAssetConfig())
       .then((result) => {

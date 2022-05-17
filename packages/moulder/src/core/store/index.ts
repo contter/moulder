@@ -1,13 +1,8 @@
+import { getParent, getSnapshot, Instance, SnapshotIn, types } from "mobx-state-tree";
+import { createContext, useContext } from "react";
+import { EMoulderMode, EStatusWindow, EType } from "../types";
 import {
-  getParent,
-  getSnapshot,
-  Instance,
-  SnapshotIn,
-  types,
-} from 'mobx-state-tree';
-import { createContext, useContext } from 'react';
-import { EMoulderMode, EStatusWindow, EType } from '../types';
-import {
+  MOULDER_CMD_ADD_ASSET,
   MOULDER_CMD_APPLIED,
   MOULDER_CMD_APPLY,
   MOULDER_CMD_CANCEL_APPLY,
@@ -15,19 +10,20 @@ import {
   MOULDER_CMD_PROXY,
   MOULDER_CMD_READY,
   MOULDER_CMD_REGENERATE,
+  MOULDER_CMD_REMOVE_ASSET,
   MOULDER_CMD_REPEAT,
   MOULDER_CMD_SET_THEME,
   MOULDER_CMD_STATUS,
-  MOULDER_IS_DEV,
-  MOULDER_IS_EDITOR,
-  MOULDER_IS_ON_FRAME,
-} from '../constants';
-import { generateHash, hash } from '../hash';
-import { regenerateRandom } from '../random';
-import { eventEmitter } from '../events';
-import { sendToParent } from '../relay/action';
-import { digest } from '../digest';
-import { Node } from './base';
+  MOULDER_IS_DEV
+} from "../constants";
+import { generateHash, hash } from "../hash";
+import { regenerateRandom } from "../random";
+import { eventEmitter } from "../events";
+import { sendToParent } from "../relay/action";
+import { digest } from "../digest";
+import { Node } from "./base";
+import { getMode } from "./utils";
+import { getUrl } from "../utils";
 
 const Windows = types
   .model({
@@ -49,6 +45,9 @@ const Windows = types
 
       const ast = getParent<typeof Asset>(self, 2);
       // check all success and send ready
+      if (ast.windows.filter(a => [EType.PROPERTY, EType.NODE].includes(a.type) && a.status === EStatusWindow.SUCCESS).length == 2) {
+        ast.setReady(true);
+      }
       if (
         ast.windows.filter((a) => a.status === EStatusWindow.SUCCESS).length ===
         ast.windows.length
@@ -66,6 +65,7 @@ const Asset = types
     name: types.string,
     order: types.number,
     windows: types.array(Windows),
+    ready: types.optional(types.boolean, false),
     status: types.optional(
       types.enumeration<EStatusWindow>(
         'EStatusWindow',
@@ -89,6 +89,9 @@ const Asset = types
         });
       }
     },
+    setReady(st: boolean) {
+      self.ready = st;
+    }
   }));
 
 const RootStore = types
@@ -149,7 +152,7 @@ const RootStore = types
               type: MOULDER_CMD_SET_THEME,
               data: { theme },
             },
-            a.url
+            getUrl(a.url)
           );
         });
       });
@@ -157,6 +160,12 @@ const RootStore = types
     },
     addAsset(asset: SnapshotIn<typeof Asset> | Instance<typeof Asset>) {
       self.assets.push(asset);
+    },
+    removeAsset(assetId) {
+      const asset = self.assets.find(a => a.id === assetId);
+      if (asset) {
+        self.assets.remove(asset);
+      }
     },
     apply() {
       // const newHash = generateHash();
@@ -236,16 +245,6 @@ const getTheme = () => {
   } catch {
     return 'dark';
   }
-};
-
-const getMode = () => {
-  if (MOULDER_IS_DEV && MOULDER_IS_EDITOR) {
-    return EMoulderMode.DEV;
-  }
-  if (MOULDER_IS_EDITOR && MOULDER_IS_ON_FRAME) {
-    return EMoulderMode.EDITOR;
-  }
-  return EMoulderMode.PRODUCTION;
 };
 
 export const rootStore = RootStore.create(
@@ -334,6 +333,34 @@ eventEmitter.on(MOULDER_CMD_PROXY, (data) => {
   ) {
     rootStore.setSelected(false);
   }
+});
+
+eventEmitter.on(MOULDER_CMD_ADD_ASSET, data => {
+  // console.log('-e-MOULDER_CMD_ADD_ASSET', data);
+  rootStore.addAsset({
+    ...data.asset,
+    windows: [
+      {
+        id: 1,
+        type: EType.ASSET,
+        status: EStatusWindow.LOADING,
+      },
+      {
+        id: 2,
+        type: EType.NODE,
+        status: EStatusWindow.LOADING,
+      },
+      {
+        id: 3,
+        type: EType.PROPERTY,
+        status: EStatusWindow.LOADING,
+      },
+    ],
+  });
+});
+
+eventEmitter.on(MOULDER_CMD_REMOVE_ASSET, data => {
+  rootStore.removeAsset(data.assetId);
 });
 
 export type RootInstance = Instance<typeof RootStore>;

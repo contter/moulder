@@ -6,6 +6,7 @@ import {
   MOULDER_IFRAME_SANDBOX,
 } from '../constants';
 import { getUrl } from '../utils';
+import { EMoulderMode } from "../types";
 
 export const runToken = () => {
   const doc = document.querySelector(`#${MOULDER_CONTAINER_ID}`);
@@ -13,7 +14,6 @@ export const runToken = () => {
     doc.remove();
   }
   const state = window.MOULDER_STATE;
-  console.log('runToken', state);
   const width =
     state.data.root.properties.find((a) => a.id === 'size')?.state?.width
       ?.value ?? MOULDER_CONFIG_DEFAULT_SIZE;
@@ -50,6 +50,7 @@ export const runToken = () => {
     iframe.onload = (e) => {
       const el = e.currentTarget as HTMLIFrameElement;
       asset.proxy = el.contentWindow;
+      asset.state.snap.mode = EMoulderMode.PRODUCTION;
       el.contentWindow?.postMessage(
         {
           type: MOULDER_CMD_SET_STATE,

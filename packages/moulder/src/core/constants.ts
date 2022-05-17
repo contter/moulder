@@ -1,24 +1,24 @@
 export const MOULDER_CONTAINER_ID = 'moulder';
 // TODO Don't use in production
+const en = Math.random();
+const is_editor = { ['{MOULDER_IS_FLAG_EDITOR}']: en };
 export const MOULDER_IS_EDITOR =
-  parseInt(
+  is_editor['{MOULDER_IS_FLAG_EDITOR}'] === en && (parseInt(
     new URLSearchParams(window.location.search).get('editor') ?? '0',
     10
-  ) === 1;
-
-const en = Math.random();
-const is_editor = { '{{{MOULDER_IS_EDITOR}}}': en };
+  ) === 1);
+const ed = Math.random();
+const is_dev = { ['{MOULDER_IS_FLAG_DEV}']: ed };
 export const MOULDER_IS_DEV =
-  is_editor['{{{MOULDER_IS_EDITOR}}}'] === en &&
-  parseInt(
+  is_dev['{MOULDER_IS_FLAG_DEV}'] === ed && (parseInt(
     new URLSearchParams(window.location.search).get('dev') ?? '0',
     10
-  ) === 1;
+  ) === 1);
 export const MOULDER_IFRAME_ALLOW =
   'gyroscope; accelerometer; xr-spatial-tracking; microphone; camera;';
 export const MOULDER_IFRAME_SANDBOX =
   'allow-same-origin allow-scripts allow-modals';
-export const MOULDER_IPFS_PREFIX_URL = 'https://ipfs.io/ipfs/';
+export const MOULDER_IPFS_PREFIX_URL = `${window.location.protocol}//${window.location.hostname}/ipfs/`; // 'https://ipfs.io/ipfs/';
 export const MOULDER_ASSET_ID = parseInt(
   new URLSearchParams(window.location.search).get('id') ?? '0',
   10
@@ -26,6 +26,11 @@ export const MOULDER_ASSET_ID = parseInt(
 export const MOULDER_IS_HASH = new URLSearchParams(window.location.search).get(
   'hash'
 );
+export const MOULDER_IS_CHECK =
+  parseInt(
+    new URLSearchParams(window.location.search).get('check') ?? '0',
+    10
+  ) === 1;
 
 export const MOULDER_CONFIG_MAX_SIZE = 4000;
 export const MOULDER_CONFIG_MIN_SIZE = 100;
@@ -48,6 +53,9 @@ export const MOULDER_CMD_SET_THEME = 'MOULDER_CMD_SET_THEME';
 export const MOULDER_CMD_REQUEST_CAPTURE = 'MOULDER_CMD_REQUEST_CAPTURE';
 export const MOULDER_CMD_RESPONSE_CAPTURE = 'MOULDER_CMD_RESPONSE_CAPTURE';
 export const MOULDER_CMD_CLEAR_SELECTION = 'MOULDER_CMD_CLEAR_SELECTION';
+export const MOULDER_CMD_SET_CONF = 'MOULDER_CMD_SET_CONF';
+export const MOULDER_CMD_ADD_ASSET = 'MOULDER_CMD_ADD_ASSET';
+export const MOULDER_CMD_REMOVE_ASSET = 'MOULDER_CMD_REMOVE_ASSET';
 
 export const MOULDER_IS_ON_FRAME = window.parent !== window;
 

@@ -21,14 +21,16 @@ import {
   MOULDER_CMD_REGENERATE,
   MOULDER_CMD_REPEAT,
   MOULDER_CMD_SET_STATE,
-  MOULDER_CMD_SET_THEME,
-} from '../constants';
+  MOULDER_CMD_SET_THEME, MOULDER_IS_HASH
+} from "../constants";
 import { debounce, deepCopy, getType, searchBy } from '../utils';
-import { EType } from '../types';
+import { EMoulderMode, EType } from "../types";
 import { apply } from './apply';
 import { regenerateRandom } from '../random';
 import { Node } from './base';
 import { prepareSnapshot } from './snapshot';
+import { hash } from "../hash";
+import { getAssetMode } from "./utils";
 
 let IS_APPLIED_PROCESS = false;
 type TypeReaction = typeof reaction;
@@ -38,6 +40,10 @@ const Store = types
     hash: types.maybeNull(types.string),
     rnd: types.maybeNull(types.number),
     node: Node,
+    mode: types.enumeration<EMoulderMode>(
+      'EMoulderMode',
+      Object.values(EMoulderMode)
+    ),
     name: types.optional(types.string, ''),
     iteration: types.optional(types.number, 0),
     selected: types.frozen(types.array(types.string)), //types.array(types.string)//types.array(types.safeReference(Node)), // ?
@@ -77,18 +83,26 @@ const Store = types
     },
   }));
 
+let _hash: any = null;
+let _rnd = 0;
+if (MOULDER_IS_HASH) {
+  _hash = hash();
+  _rnd = 0.1;
+}
+
 export const store = Store.create(
   {
-    hash: null,
+    hash: _hash,
     iteration: 0,
     name: '',
-    rnd: 0,
+    rnd: _rnd,
     node: {
       id: 'root',
       name: 'Root',
       children: [],
       // children: []
     },
+    mode: getAssetMode(),
     selected: [],
   },
   {}
