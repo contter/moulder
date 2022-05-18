@@ -53,7 +53,7 @@ const Store = types
       // reaction: reaction,
       subscribe: (func: (reaction: TypeReaction) => void) => {
         //,
-        if (self.iteration <= 1) {
+        if (self.iteration <= 1 && self.mode !== EMoulderMode.PRODUCTION) {
           func(reaction);
         }
       },
@@ -202,6 +202,9 @@ eventEmitter.on(MOULDER_CMD_CANCEL_APPLY, (_) => {
 
 eventEmitter.on(MOULDER_CMD_SET_STATE, (data) => {
   const snapshot = prepareSnapshot(data.snap, false);
+  snapshot.iteration = 0;
+  snapshot.rnd = 0.1;
+  snapshot.selected = [];
   applySnapshot(store, snapshot);
 });
 

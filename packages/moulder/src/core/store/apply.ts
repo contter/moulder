@@ -13,7 +13,10 @@ export const apply = (snapshot: any) => {
   // const newSnap = deepCopy(snapshot);
   const snap = prepareSnapshot(snapshot);
   const opts = getAssetConfig();
-  const state = opts?.prepareState?.(snap.node) ?? snap.node;
+  let state = opts?.prepareState?.(snap.node);
+  if (!state || !Object.keys(state ?? {}).length) {
+    state = snap.node;
+  }
 
   digest(JSON.stringify(state))
     .then((digest) => {

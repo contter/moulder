@@ -189,7 +189,7 @@ const Main = observer(() => {
         id: 1,
         order: 0,
         name: 'Asset',
-        url: window.location.origin + window.location.pathname,
+        url: window.location.origin + window.location.pathname + '?r=1',
         windows: [
           {
             id: 1,

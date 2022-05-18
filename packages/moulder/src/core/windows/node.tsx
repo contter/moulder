@@ -330,7 +330,11 @@ const Node = observer(({ node }: { node: IMoulderNode }) => {
               onClick={() => {
                 // TODO Confirm?
                 if (store.selection.length <= 1) {
-                  node.remove();
+                  if (node.locked) {
+                    alert('You cannot delete a locked item');
+                  } else {
+                    node.remove();
+                  }
                 } else {
                   const yes = confirm(
                     'Are you sure you want to delete selected items?'
@@ -338,7 +342,7 @@ const Node = observer(({ node }: { node: IMoulderNode }) => {
                   if (yes) {
                     store.selection
                       .filter((a) =>
-                        (a.options.get('actions') ?? []).includes('deleted')
+                        (a.options.get('actions') ?? []).includes('deleted') && !a.locked
                       )
                       .forEach((node) => {
                         node.remove();

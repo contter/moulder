@@ -72,7 +72,7 @@ export const Node = types
       return self.state.get('visible') as boolean;
     },
     get locked(): boolean {
-      return self.state.get('locked') as boolean;
+      return self.state.get('locked') as boolean ?? false;
     },
     get collapse(): boolean {
       return self.state.get('collapse') as boolean;
@@ -165,6 +165,8 @@ export const Node = types
     },
 
     remove() {
-      self.state.merge({ deleted: true });
+      if (!self.locked) {
+        self.state.merge({ deleted: true });
+      }
     },
   }));

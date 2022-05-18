@@ -1643,7 +1643,7 @@ at-least-node@^1.0.0:
   resolved "https://registry.npmjs.org/at-least-node/-/at-least-node-1.0.0.tgz"
   integrity sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==
 
-autoprefixer@^10.4.2, autoprefixer@^10.4.7:
+autoprefixer@^10.4.7:
   version "10.4.7"
   resolved "https://registry.npmjs.org/autoprefixer/-/autoprefixer-10.4.7.tgz"
   integrity sha512-ypHju4Y2Oav95SipEcCcI5J7CGPuvz8oat7sUtYj3ClK44bldfvtvcxK6IEK++7rqB7YchDGzweZIBG+SD0ZAA==
@@ -2158,7 +2158,7 @@ csstype@^3.0.2:
   resolved "https://registry.npmjs.org/csstype/-/csstype-3.1.0.tgz"
   integrity sha512-uX1KG+x9h5hIJsaKR9xHUeUraxf8IODOwq9JLNPq6BwB04a/xgpq3rcx47l5BZu5zBPlgD342tdke3Hom/nJRA==
 
-daisyui@^2.13.5, daisyui@^2.15.0:
+daisyui@^2.15.0:
   version "2.15.0"
   resolved "https://registry.npmjs.org/daisyui/-/daisyui-2.15.0.tgz"
   integrity sha512-FvKgt3+sqnpNdh9dop2Md9lNnOsJvJ1GGImKrgA6j/gu9tY0Cdp2x9ftd0Y6RrCbDvgu+1ystobvFkAPOnXAfg==
@@ -2877,15 +2877,6 @@ fs-extra@^10.0.0, fs-extra@^10.1.0:
     jsonfile "^6.0.1"
     universalify "^2.0.0"
 
-fs-extra@^10.0.1:
-  version "10.0.1"
-  resolved "https://registry.npmjs.org/fs-extra/-/fs-extra-10.0.1.tgz"
-  integrity sha512-NbdoVMZso2Lsrn/QwLXOy6rm0ufY2zEOKCDzJR/0kBsb0E6qed0P3iYK+Ath3BfvXEeu4JhEtXLgILx5psUfag==
-  dependencies:
-    graceful-fs "^4.2.0"
-    jsonfile "^6.0.1"
-    universalify "^2.0.0"
-
 fs-extra@^8.1.0:
   version "8.1.0"
   resolved "https://registry.npmjs.org/fs-extra/-/fs-extra-8.1.0.tgz"
@@ -3248,11 +3239,6 @@ humanize-ms@^1.2.1:
   integrity sha1-xG4xWaKT9riW2ikxbYtv6Lt5u+0=
   dependencies:
     ms "^2.0.0"
-
-hyperapp@^2.0.22:
-  version "2.0.22"
-  resolved "https://registry.npmjs.org/hyperapp/-/hyperapp-2.0.22.tgz"
-  integrity sha512-3uf9HjnjrhbfykowFNEObZewBEo4DXJIM+9FnGkiR9E4H2eh2f921SzMCMS69X5nN3A7KFfmZc9KCKh/7TQBFA==
 
 iconv-lite@^0.4.24:
   version "0.4.24"
@@ -4137,22 +4123,6 @@ modify-values@^1.0.0:
   resolved "https://registry.npmjs.org/modify-values/-/modify-values-1.0.1.tgz"
   integrity sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==
 
-moulder@*:
-  version "0.1.4"
-  resolved "https://registry.npmjs.org/moulder/-/moulder-0.1.4.tgz"
-  integrity sha512-qDeLIhlgopEYQj7hkGI/dm2nkfkjgjtXUxv/ATdiQoaAkECrfyMi9XB+59sexR/pzo/UkACR+8uv+0HPubSPjA==
-  dependencies:
-    adm-zip "^0.5.9"
-    autoprefixer "^10.4.2"
-    daisyui "^2.13.5"
-    events "^3.3.0"
-    fs-extra "^10.0.1"
-    hyperapp "^2.0.22"
-    postcss "^8.4.7"
-    style-loader "^3.3.1"
-    tailwindcss "^3.0.23"
-    vite "^2.9.1"
-
 ms@2.1.2:
   version "2.1.2"
   resolved "https://registry.npmjs.org/ms/-/ms-2.1.2.tgz"
@@ -4803,7 +4773,7 @@ postcss-value-parser@^4.2.0:
   resolved "https://registry.npmjs.org/postcss-value-parser/-/postcss-value-parser-4.2.0.tgz"
   integrity sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==
 
-postcss@^8.4.12, postcss@^8.4.13, postcss@^8.4.7:
+postcss@^8.4.12, postcss@^8.4.13:
   version "8.4.13"
   resolved "https://registry.npmjs.org/postcss/-/postcss-8.4.13.tgz"
   integrity sha512-jtL6eTBrza5MPzy8oJLFuUscHDXTV5KcLlqAWHl5q5WYRfnNRGSmOZmOZ1T6Gy7A99mOZfqungmZMpMmCVJ8ZA==
@@ -5599,7 +5569,7 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.npmjs.org/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-tailwindcss@^3.0, tailwindcss@^3.0.23, tailwindcss@^3.0.24:
+tailwindcss@^3.0, tailwindcss@^3.0.24:
   version "3.0.24"
   resolved "https://registry.npmjs.org/tailwindcss/-/tailwindcss-3.0.24.tgz"
   integrity sha512-H3uMmZNWzG6aqmg9q07ZIRNIawoiEcNFKDfL+YzOPuPsXuDXxJxB9icqzLgdzKNwjG3SAro2h9SYav8ewXNgig==
@@ -5963,18 +5933,6 @@ vite-plugin-eslint@^1.6.0:
   dependencies:
     "@rollup/pluginutils" "^4.2.1"
     rollup "^2.70.2"
-
-vite@^2.9.1:
-  version "2.9.1"
-  resolved "https://registry.npmjs.org/vite/-/vite-2.9.1.tgz"
-  integrity sha512-vSlsSdOYGcYEJfkQ/NeLXgnRv5zZfpAsdztkIrs7AZHV8RCMZQkwjo4DS5BnrYTqoWqLoUe1Cah4aVO4oNNqCQ==
-  dependencies:
-    esbuild "^0.14.27"
-    postcss "^8.4.12"
-    resolve "^1.22.0"
-    rollup "^2.59.0"
-  optionalDependencies:
-    fsevents "~2.3.2"
 
 vite@^2.9.9:
   version "2.9.9"
