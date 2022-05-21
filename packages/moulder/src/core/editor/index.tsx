@@ -410,7 +410,8 @@ const Main = observer(() => {
             <div className={'h-full'}>
               {store.assets.map((a) => {
                 const _url = getUrl(a.url);
-                const url = `${_url}&id=${a.id}&type=${EType.NODE}`;
+                const isQuery = _url.includes('?');
+                const url = `${_url}${isQuery ? '&' : '?'}id=${a.id}&type=${EType.NODE}`;
                 return (
                   <div
                     style={{
@@ -443,7 +444,8 @@ const Main = observer(() => {
         >
           {store.assets.map((a) => {
             const _url = getUrl(a.url);
-            const url = `${_url}&id=${a.id}&type=${EType.ASSET}`;
+            const isQuery = _url.includes('?');
+            const url = `${_url}${isQuery ? '&' : '?'}id=${a.id}&type=${EType.ASSET}`;
             return (
               <div
                 style={{
@@ -491,7 +493,8 @@ const Main = observer(() => {
           <div className={'h-full overflow-scroll'}>
             {store.assets.map((a) => {
               const _url = getUrl(a.url);
-              const url = `${_url}&id=${a.id}&type=${EType.PROPERTY}`;
+              const isQuery = _url.includes('?');
+              const url = `${_url}${isQuery ? '&' : '?'}id=${a.id}&type=${EType.PROPERTY}`;
               return (
                 <div
                   style={{

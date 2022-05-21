@@ -13,16 +13,22 @@ import { getAssetConfig } from '../register';
 
 if (getType() === EType.ASSET || MOULDER_IS_HASH) {
   eventEmitter.on(MOULDER_CMD_REQUEST_CAPTURE, (_) => {
-    capture(getAssetConfig())
-      .then((result) => {
-        eventEmitter.emit(MOULDER_CMD_RESPONSE_CAPTURE, {
-          id: MOULDER_ASSET_ID,
-          data: result,
-        });
-      })
-      .catch((e) => {
-        //
+    capture(getAssetConfig(), (data) => {
+      eventEmitter.emit(MOULDER_CMD_RESPONSE_CAPTURE, {
+        id: MOULDER_ASSET_ID,
+        data,
       });
+    });
+    // capture(getAssetConfig())
+    //   .then((result) => {
+    //     eventEmitter.emit(MOULDER_CMD_RESPONSE_CAPTURE, {
+    //       id: MOULDER_ASSET_ID,
+    //       data: result,
+    //     });
+    //   })
+    //   .catch((e) => {
+    //     //
+    //   });
   });
 }
 

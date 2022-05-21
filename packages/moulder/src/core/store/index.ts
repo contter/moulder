@@ -261,12 +261,6 @@ export const rootStore = RootStore.create(
   {}
 );
 
-// onSnapshot(rootStore, (snapshot) => {
-//   // console.log("Snapshot: ", snapshot);
-//   // localStorage.setItem("rootState", JSON.stringify(snapshot));
-// });
-
-// // On Any command
 eventEmitter.on(MOULDER_CMD_APPLIED, (data) => {
   if (!data.data) {
     rootStore.unsetApplied();
@@ -336,7 +330,6 @@ eventEmitter.on(MOULDER_CMD_PROXY, (data) => {
 });
 
 eventEmitter.on(MOULDER_CMD_ADD_ASSET, data => {
-  // console.log('-e-MOULDER_CMD_ADD_ASSET', data);
   rootStore.addAsset({
     ...data.asset,
     windows: [

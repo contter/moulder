@@ -80,6 +80,11 @@ export const Node = types
     get deleted(): boolean {
       return self.state.get('deleted') as boolean;
     },
+    get readState() {
+      return Object.fromEntries(
+        [...self.state.keys()].map((a) => [[a], self.state.get(a)])
+      );
+    },
     get children() {
       return self.childrenLocal.filter((a) => !a.state.get('deleted'));
     },

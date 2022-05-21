@@ -21,7 +21,7 @@ import {
   MOULDER_CMD_REGENERATE,
   MOULDER_CMD_REPEAT,
   MOULDER_CMD_SET_STATE,
-  MOULDER_CMD_SET_THEME, MOULDER_IS_HASH
+  MOULDER_CMD_SET_THEME, MOULDER_IS_HASH, MOULDER_IS_ON_FRAME
 } from "../constants";
 import { debounce, deepCopy, getType, searchBy } from '../utils';
 import { EMoulderMode, EType } from "../types";
@@ -51,9 +51,9 @@ const Store = types
   .volatile<{ subscribe: (func: (reaction: TypeReaction) => void) => void }>(
     (self) => ({
       // reaction: reaction,
-      subscribe: (func: (reaction: TypeReaction) => void) => {
+      subscribe: (func: (reaction: TypeReaction) => void, force = false) => {
         //,
-        if (self.iteration <= 1 && self.mode !== EMoulderMode.PRODUCTION) {
+        if ((self.iteration <= 1 || force) && self.mode !== EMoulderMode.PRODUCTION) {
           func(reaction);
         }
       },
@@ -85,7 +85,7 @@ const Store = types
 
 let _hash: any = null;
 let _rnd = 0;
-if (MOULDER_IS_HASH) {
+if (MOULDER_IS_HASH && !MOULDER_IS_ON_FRAME) {
   _hash = hash();
   _rnd = 0.1;
 }

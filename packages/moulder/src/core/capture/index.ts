@@ -1,15 +1,23 @@
 // TODO Build need many assets
-export const capture = async (options) => {
+export const capture = async (options, callback: (data: any) => any) => {
   // chunks in future
   // svg and other
   options?.beforeCapture?.();
-  return new Promise((resolve, reject) => {
-    options.media?.forEach((m: any) => {
-      // TODO check custom render
+  options.media?.forEach((m: any, i) => {
 
-      //
-      // if ('createImageBitmap' in window) {}
-
+    //
+    // if ('createImageBitmap' in window) {}
+    if (m.capture) {
+      m.capture((blob) => {
+        callback({
+          blob,
+          mime: m.mime,
+          format: m.format,
+          order: i,
+          count: options.media.length
+        })
+      });
+    } else {
       const elem = document.querySelector(
         `#${m.containerId}`
       ) as HTMLCanvasElement;
@@ -33,16 +41,18 @@ export const capture = async (options) => {
 
         tmpCanvas.toBlob(
           (blob) => {
-            resolve({
+            callback({
               blob,
               mime: m.mime,
               format: m.format,
-            });
+              order: i,
+              count: options.media.length
+            })
           },
           m.mime,
           1
         );
       }
-    });
+    }
   });
 };

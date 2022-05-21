@@ -51,6 +51,7 @@ export interface IMoulderNode {
   readonly collapse: boolean;
   readonly locked: boolean;
   readonly visible: boolean;
+  readonly deleted: boolean;
   readonly options: any;
 
   setState: (state: IMoulderNodeState) => void;
@@ -104,6 +105,7 @@ export interface IMoulderMediaConfig {
   containerId: string;
   format: string;
   mime: string;
+  capture?: (callback: (blob: Blob) => any) => void;
 }
 
 export enum EMoulderMode {
@@ -127,7 +129,7 @@ export interface IMoulder {
   readonly selection: string[];
   setSelection: (selection: string[]) => void;
 
-  subscribe: (func: (reaction: TypeReaction) => void) => void;
+  subscribe: (func: (reaction: TypeReaction) => void, force?: boolean) => void;
 
   toJSON: () => IMoulder;
 }
