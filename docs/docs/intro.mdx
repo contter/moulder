@@ -1,0 +1,66 @@
+---
+sidebar_position: 1
+---
+
+# Introduction
+
+![Moulder Framework](/img/banner.png)
+
+## What is Moulder?
+
+Позволяет создавать ассеты ...
+
+ВИДЕО
+
+## Features {#features}
+
+Docusaurus is built with high attention to the developer and contributor experience.
+
+- **🎛️ Pluggable**:
+  - Customizable components
+- **⚛️ Built with React ️**:
+  - Extend and customize with React
+- **🖊️ Render any libraries ️**:
+  - Using any js library (p5js, threejs, etc)
+- **📸 Capture in box ️**:
+  - ...
+
+## Getting Started
+
+<Wrapper>
+<Item url="/docs/category/the-guide" title="🚀 The Guide">First steps</Item>
+<Item url="/docs/category/the-guide" title="⚒️ Starter Kits">Easy to start</Item>
+<Item url="/docs/category/the-guide" title="🛝️ Playground">Immediately in your browser!</Item>
+</Wrapper>
+
+
+
+export const Wrapper = ({children}) => (
+  <div
+    style={{
+      display: 'flex',
+      gap: '0px 15px',
+    }}>
+    {children}
+  </div>
+)
+
+
+export const Item = ({children, title, url}) => (
+  <a
+    href={url}
+    style={{
+      borderRadius: '5px',
+      padding: '1rem',
+      display: 'flex',
+      cursor: 'pointer',
+//       background: '#f0f4f8',
+      width: '100%',
+      boxShadow: '0 1.5px 3px 0 rgb(0 0 0 / 15%)',
+      border: '1px solid var(--ifm-color-emphasis-200)',
+      flexDirection: 'column',
+    }}>
+    <span style={{fontWeight: 'bold'}}>{title}</span>
+    {children}
+  </a>
+);
