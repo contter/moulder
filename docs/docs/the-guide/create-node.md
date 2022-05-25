@@ -2,10 +2,10 @@
 sidebar_position: 3
 ---
 
-# Create The Node
+# Create Node
 
-Нода - ключевой элемент в работе фреймворка.
-К ноде привязываются свойства.
+Node is a base element in the work of the framework.
+Properties are bound to the node.
 
 ### Create the node
 ```javascript
@@ -13,15 +13,15 @@ sidebar_position: 3
 const node = moulder.root.createNode('Name');
 ```
 :::warning
-Название ноды должно быть уникально.
+The name of the node must be unique.
 :::
 
-Нода может имеет следующее опции:
-- Скрыта
-- Заблокированна
-- Удалена
+Node may have the following actions:
+- Hidden
+- Blocked
+- Deleted
 
-По умолчанию у ноды включены все опции, но вы можете выбрать вручную
+By default the node has all actions enabled, but you can manually select
 ```javascript
 // only visible
 const node1 = moulder.root.createNode('Name 1', { "actions": ["visible"]});
@@ -38,7 +38,7 @@ const node4 = moulder.root.createNode('Name 4', { "actions": []});
 node.remove();
 ```
 :::info
-Ноды не удаляются полность. У них меняется статус на deleted.
+Nodes are not completely deleted. They change their state to deleted.
 :::
 
 ### Change the state of node
@@ -54,6 +54,6 @@ node.setState({ locked: false });
 const children = node.children;
 ```
 
-Как подписаться на обновления свойста.
+How to subscribe to property updates.
 
-Читать статью - [Listening and change state](/).
+Read the - [Listening and change state](/docs/the-guide/listening-and-change-state).

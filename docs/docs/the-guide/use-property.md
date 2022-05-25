@@ -2,14 +2,13 @@
 sidebar_position: 2
 ---
 
-# Use The Property
+# Use Property
 
-Свойства отображают в правом сайдбаре.
-Свойства полностью настраиваемыеб вы можете легко написать свои компоненты для них (ссылка как написать свой).
+The properties are displayed in the right sidebar. The properties are fully customizable, and you can easily write your own components for them (link how to write your own).
 
-Рассмотрим как работает дефолный компонент `between`, который возвращает случайной число из заданного интервале.
+Let's see how the default component of between works, which returns a random number from a given range.
 
-Свойство привязывается к конкретной ноде (как создать ноду - [читать здесь](/)).
+The property is bound to a specific node ([read here how to create a node](/docs/the-guide/create-node)).
 
 ```javascript
 // moulder.node - it's the root node.
@@ -34,6 +33,6 @@ propRandom.change({ value: 10 });
 propRandom.change({ min: 5 });
 ```
 
-Как подписаться на обновления свойста.
+How to subscribe to property updates.
 
-Читать статью - [Listening and change state](/).
+Read the - [Listening and change state](/docs/the-guide/listening-and-change-state).
