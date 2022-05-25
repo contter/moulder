@@ -1,0 +1,66 @@
+---
+sidebar_position: 1
+---
+
+# Introduction
+
+![Moulder Framework](/img/banner.png)
+
+## What is Moulder?
+
+This is a Swiss knife for creating artwork.
+
+## Features {#features}
+
+Moulder is built with high attention to the developer and creator experience.
+
+- **🎛️ Pluggable**:
+  - Customizable components.
+- **🧶️ Editor**:
+  - Node-based editor out of the box.
+- **⚛️ Built with React**:
+  - Extend and customize with React.
+- **🖊️ Render any libraries**:
+  - Using any js library (p5js, threejs and etc).
+- **📸 Capture**:
+  - Export to images, svg and other.
+
+## Getting Started
+
+<Wrapper>
+<Item url="/docs/the-guide/setup" title="🚀 The Guide">First steps</Item>
+<Item url="/docs/starter-kits/links" title="⚒️ Starter Kits">Easy to start</Item>
+<Item url="/" title="🛝️ Playground">Immediately in your browser! Soon</Item>
+</Wrapper>
+
+
+
+export const Wrapper = ({children}) => (
+  <div
+    style={{
+      display: 'flex',
+      gap: '0px 15px',
+    }}>
+    {children}
+  </div>
+)
+
+
+export const Item = ({children, title, url}) => (
+  <a
+    href={url}
+    style={{
+      borderRadius: '5px',
+      padding: '1rem',
+      display: 'flex',
+      cursor: 'pointer',
+//       background: '#f0f4f8',
+      width: '100%',
+      boxShadow: '0 1.5px 3px 0 rgb(0 0 0 / 15%)',
+      border: '1px solid var(--ifm-color-emphasis-200)',
+      flexDirection: 'column',
+    }}>
+    <span style={{fontWeight: 'bold'}}>{title}</span>
+    {children}
+  </a>
+);
